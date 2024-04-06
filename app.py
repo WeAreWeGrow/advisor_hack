@@ -57,15 +57,14 @@ def main():
     embeddings = OpenAIEmbeddings()
     knowledge_base = FAISS.from_texts(chunks, embeddings)
 
-    user_question = st.text_input("Ask a question about your PDF:")
-    if user_question:
-        docs = knowledge_base.similarity_search(user_question)
-        llm = LlmEngine()
-        chain = llm.get_qa_chain(knowledge_base)
-        with get_openai_callback() as cb:
-           response = chain({"query": user_question})
-           print(cb)  
-        st.write(response['result'])
+    user_question = "What would you recommend a person to do based on the information provided in the Tell us about yourself file?"
+    docs = knowledge_base.similarity_search(user_question)
+    llm = LlmEngine()
+    chain = llm.get_qa_chain(knowledge_base)
+    with get_openai_callback() as cb:
+        response = chain({"query": user_question})
+        print(cb)  
+    st.write(response['result'])
 
     
 
